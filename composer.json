@@ -1,0 +1,31 @@
+{
+    "name": "gregorme/rest-api",
+    "description": "REST API pattern for VueJs Apps",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gregor Müller-Elmau",
+            "email": "gregor.mueller-elmau@schalk-and-friends.de"
+        }
+    ],
+    "require": {
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-fileinfo": "*",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "firebase/php-jwt": "^6.0",
+        "symfony/var-dumper": "^4.1",
+        "vlucas/phpdotenv": "^5.2",
+        "vlucas/valitron": "^1.4"
+    },
+    "config" : {
+        "sort-packages" : true,
+        "platform" : {
+            "php" : "7.4"
+        },
+        "preferred-install": "source",
+        "cache-files-ttl": 0
+    }
+}

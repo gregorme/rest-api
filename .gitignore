@@ -1,0 +1,7 @@
+.DS_Store
+.idea
+vendor
+logs
+!.ddev/nginx_full/nginx-site.conf
+!logs/.gitkeep
+
