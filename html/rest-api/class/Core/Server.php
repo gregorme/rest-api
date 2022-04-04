@@ -109,6 +109,7 @@ class Server {
 				'callback' 	 => [&$this, 'generate_rest_schema'],
 				'access'	 => 'public',
 				'parameters' => [],
+				'dependencies' => [],
 			]);
 			return true;
 		}
@@ -122,6 +123,7 @@ class Server {
 					'callback' 	 => [&$Controller, 'generate_namespace_schema'],
 					'access'	 => 'public',
 					'parameters' => [],
+					'dependencies' => [],
 				]);
 				return true;
 			}
@@ -171,13 +173,36 @@ class Server {
 
 	private function get_route_regex(string $route, array $params): string {
 
-		$reg = preg_replace_callback("/\/:([a-z-_]+)/i", function($match){
+		if(preg_match_all("/\/:([a-z-_]+)/i", $route, $matches)){
 
-			return sprintf('/(?<%s>%s)', $match[1], '[a-z0-9-_+]+');
+			$total = count($matches[0]) - 1;
 
-		}, $route);
+			foreach($matches[0] as $key => $search){
+				$name 		= $matches[1][$key];
+				$type		= $params[$name]['type'] ?? 'string';
+				$required 	= $params[$name]['required'] ?? true;
 
-		return sprintf('/^%s$/i', str_replace('/', '\/', $reg));
+				if(!$required && $key < $total){
+					Logfile::warning(sprintf('Only the last parameter of a route can be optional. %s must be defined as mandatory field.', $name));
+					$required = true;
+				}
+
+				switch($type){
+					case 'integer': $reg = '[0-9]+'; break;
+					case 'number':	$reg = '[0-9]+(?:\.[0-9]+)*'; break;
+					case 'float': 	$reg = '[0-9]+\.[0-9]+'; break;
+					case 'bool': 	$reg = '0|1'; break;
+					case 'string':
+					default:		$reg =  '[a-z0-9-_+]+'; break;
+				}
+
+				$reg_base 	= $required ? '/(?<%s>%s)' : '/?(?<%s>%s)?';
+				$replace 	= sprintf($reg_base, $name, $reg);
+				$route 		= str_replace($search, $replace, $route);
+			}
+		}
+
+		return sprintf('/^%s$/i', str_replace('/', '\/', $route));
 	}
 
 	private function validate_access_level(Request $request): bool {

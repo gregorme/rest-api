@@ -21,13 +21,14 @@ class User extends RouteController {
 			'GET' => [
 				'name' => 'Get User',
 				'description' => '',
-				'access' => 'admin',
+				'access' => 'public',
 				'callback' => [&$this, 'get_user_data'],
 				'parameters' => [
 					'id'				=> [
 						'in'			=> 'variable',
 						'required'		=> true,
 						'type'			=> 'integer',
+						'allow-empty'	=> true,
 						'validation'	=> [
 
 							'valitron' => [

@@ -37,16 +37,16 @@ public function my_callback(Request $request): void {
 
 ## Parameter Settings
 
-| Key         | Type   | Required | Default  | Description                                                              |
-|-------------|--------|----------|----------|--------------------------------------------------------------------------|
-| type        | string | No       | string   | value type, one of [string, integer, number, float, bool, array, object] |
-| required    | bool   | No       | false    | parameter must be set and not null or empty                              |
-| default     | mixed  | No       | ''       | The default value of the parameter. Must match the defined type          |
-| description | string | No       | ''       | A short description of the value, rules, format etc.                     |
-| minimum     | number | No       | null     | Minimum value (inclusive) for numberic types                             |
-| maximum     | number | No       | null     | Maximum value (inclusive) for numeric types                              |
-| enum        | array  | No       | null     | Enumeration- / White-List for string and numeric types                   |
-| validation  | array  | No       | defaults | Custom validation and format settings                                    |
+| Key         | Type   | Required | Default  | Description                                                                                    |
+|-------------|--------|----------|----------|------------------------------------------------------------------------------------------------|
+| type        | string | No       | string   | value type, one of [string, integer, number, float, bool, array, object]                       |
+| required    | bool   | No       | false    | parameter must be set and not null or empty                                                    |
+| default     | mixed  | No       | ''       | The default value of the parameter. For optional parameters only. Must match the defined type. |
+| description | string | No       | ''       | A short description of the value, rules, format etc.                                           |
+| minimum     | number | No       | null     | Minimum value (inclusive) for numberic types                                                   |
+| maximum     | number | No       | null     | Maximum value (inclusive) for numeric types                                                    |
+| enum        | array  | No       | null     | Enumeration- / White-List for string and numeric types                                         |
+| validation  | array  | No       | defaults | Custom validation and format settings                                                          |
 
 
 ## Validation Settings

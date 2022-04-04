@@ -33,7 +33,7 @@ class Example extends RouteController {
 						'type' => 'number', // string, integer, number, float, bool, array, object
 						'in' => 'body', //query, variables, body
 						'required' => true,
-						'default' => 0,
+						'default' => 0, // for optional parameters only
 						'description' => '',
 						'minimum' => 0, // ... for integer, number, float
 						'maximum' => 100, // ... for integer, number, float

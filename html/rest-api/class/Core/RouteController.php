@@ -174,11 +174,14 @@ class RouteController {
 						$key = $clean_key;
 					}
 
+					$props['type'] = (!empty($props['type']) && Validation::type_exists($props['type']))? $props['type'] : 'string';
+
 					$tmp = [
-						'type' 		=> (!empty($props['type']) && Validation::type_exists($props['type']))? $props['type'] : 'string',
+						'type' 		=> $props['type'],
 						'in'		=> 'body',
 						'required' 	=> isset($props['required'])? (bool)$props['required'] : false,
 						'default' 	=> null,
+						'allow-empty' => false,
 					];
 
 					if(isset($props['in'])){
@@ -186,11 +189,21 @@ class RouteController {
 					}
 
 					if(isset($props['default'])){
-						if(Validation::type_validation($props['default'], $tmp['type'])){
-							$tmp['default'] = $props['default'];
+						if($props['required'] === false){
+							if(Validation::type_validation($props['default'], $tmp['type'])){
+								$tmp['default'] = $props['default'];
+							}else{
+								Logfile::warning(sprintf('Invalid default value %s for parameter %s', var_export($props['default']), $key), $area);
+							}
 						}else{
-							Logfile::warning(sprintf('invalid default value %s for parameter %s', var_export($props['default']), $key), $area);
+							Logfile::warning(sprintf('Optional parameters cannot have a default value. Default for %s ignored', $key), $area);
 						}
+					}
+
+					if($props['type'] === 'bool'){
+						$tmp['allow-empty'] = true;
+					}else if(isset($props['allow-empty'])){
+						$tmp['allow-empty'] = (bool)$props['allow-empty'];
 					}
 
 					if(!empty($props['description'])){

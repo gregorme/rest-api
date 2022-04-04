@@ -171,20 +171,19 @@ class Request {
 			// everything is OK, handover value
 			$this->set_param($key, $value);
 		}
-
 		// check if any undefined parameters have been passed
 		foreach($this->raw_params as $key => $value){
 			if(empty($parameters[$key])){
-				Logfile::notice(sprintf('the parameter %s is undefined and has been ignored', $key),$area);
+				Logfile::notice(sprintf('The parameter %s is undefined and has been ignored', $key),$area);
 			}
 		}
 		// check if required parameters are set properly
 		foreach($parameters as $key => $props){
 			if(!$props['required']) continue;
-			if(!isset($this->params[$key]) || ($props['type'] !== 'bool' && !$this->params[$key])){
+
+			if(!isset($this->params[$key]) || (!$props['allow-empty'] && $this->params[$key])){
 
 				if(isset($this->invalid_params[$key])) continue;
-				if($this->params[$key] === $props['default']) continue;
 
 				Logfile::error(sprintf('parameter %s is mandatory', $key), $area);
 				$this->set_invalid_param($key, $props['type'], $this->params[$key] ?? '',
